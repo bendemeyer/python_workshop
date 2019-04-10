@@ -351,7 +351,7 @@ class TestMessages(unittest.TestCase):
         mock_response = Mock()
         mock_response.json.return_value = {
             'status': 'success',
-            'message': 'Howdy-doo'
+            'greeting': 'Howdy-doo'
         }
         mock_request.get.return_value = mock_response
         mock_datetime.now = Mock()
@@ -372,11 +372,11 @@ from modules.messages import get_welcome_message
 class TestMessages(unittest.TestCase):
     def test_get_welcome_message(self, mock_requests, mock_datetime):
         with patch('modules.messages.datetime.datetime') as mock_datetime:
-            with patch('modules.messages.requests', new=CustomMock) as mock_requets:
+            with patch('modules.messages.requests', new=CustomMock) as mock_requests:
                 mock_response = Mock()
                 mock_response.json.return_value = {
                     'status': 'success',
-                    'message': 'Howdy-doo'
+                    'greeting': 'Howdy-doo'
                 }
                 mock_request.get.return_value = mock_response
                 mock_datetime.now = Mock()
