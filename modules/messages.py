@@ -1,10 +1,12 @@
 import requests
+import datetime
 
 
 def get_welcome_message(name):
     response = requests.get('http://localhost:5000/greeting/')
     greeting = response.json().get('greeting')
-    return f"{greeting}, {name}!"
+    time = datetime.datetime.now()
+    return f"{greeting}, {name}! The current time is {time}"
 
 
 def get_goodbye_message(name):
