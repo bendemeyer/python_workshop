@@ -1,10 +1,16 @@
+import requests
+
+
 def get_welcome_message(name):
-    return "Welcome, {0}!".format(name)
+    response = requests.get('http://localhost:5000/greeting/')
+    greeting = response.json().get('greeting')
+    return f"{greeting}, {name}!"
 
 
 def get_goodbye_message(name):
-    return "Goodbye, {0}, we'll miss you!".format(name)
+    return f"Goodbye, {name}, we'll miss you!"
 
 
-print(get_welcome_message("Ben"))
-print(get_goodbye_message("Ben"))
+if __name__ == '__main__':
+    print(get_welcome_message('Monty'))
+    print(get_goodbye_message('Monty'))
