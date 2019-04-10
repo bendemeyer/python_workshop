@@ -308,7 +308,7 @@ class TestMessages(unittest.TestCase):
     @patch('modules.messages.requests')
     def test_get_welcome_message(self, mock_requests):
         mock_response = Mock()
-		mock.json.return_value = {
+        mock_response.json.return_value = {
             'status': 'success',
             'greeting': 'Howdy-doo'
         }
@@ -353,7 +353,7 @@ class TestMessages(unittest.TestCase):
             'status': 'success',
             'message': 'Howdy-doo'
         }
-		mock_request.get.return_value = mock_response
+        mock_request.get.return_value = mock_response
         mock_datetime.now = Mock()
         mock_datetime.now.return_value = 5
         self.assertEqual(get_welcome_message('Monty'), "Howdy-doo, Monty! The current time is 5")
@@ -373,12 +373,12 @@ class TestMessages(unittest.TestCase):
     def test_get_welcome_message(self, mock_requests, mock_datetime):
         with patch('modules.messages.datetime.datetime') as mock_datetime:
             with patch('modules.messages.requests', new=CustomMock) as mock_requets:
-				mock_response = Mock()
-				mock_response.json.return_value = {
+                mock_response = Mock()
+                mock_response.json.return_value = {
                     'status': 'success',
                     'message': 'Howdy-doo'
                 }
-				mock_request.get.return_value = mock_response
+                mock_request.get.return_value = mock_response
                 mock_datetime.now = Mock()
                 mock_datetime.now.return_value = 5
                 self.assertEqual(get_welcome_message('Monty'), "Howdy-doo, Monty! The current time is 5")
