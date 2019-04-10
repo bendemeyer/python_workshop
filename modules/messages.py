@@ -1,10 +1,10 @@
 def get_welcome_message(name):
-    return "Welcome, {0}!".format(name)
+    return f"Welcome, {name}!"
 
 
 def get_goodbye_message(name):
-    return "Goodbye, {0}, we'll miss you!".format(name)
+    return f"Goodbye, {name}, we'll miss you!"
 
 
-print(get_welcome_message("Ben"))
-print(get_goodbye_message("Ben"))
+print(get_welcome_message('Monty'))
+print(get_goodbye_message('Monty'))
