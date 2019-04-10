@@ -23,7 +23,7 @@ OK, that was too easy. How about a basic greeting:
 
 ```python
 def show_greeting(name):
-    print(f"Hello {name}")
+    print(f"Hello {name}!")
 
 show_greeting("Monty")
 ```
@@ -301,18 +301,18 @@ For more complex unit testing, Python offers patching and mocking. Let's say we 
 
 ```python
 import unittest
-import json
 from unittest.mock import patch, Mock
 from modules.messages import get_welcome_message
 
 class TestMessages(unittest.TestCase):
     @patch('modules.messages.requests')
     def test_get_welcome_message(self, mock_requests):
-        mock_requests.get = Mock()
-        mock_requests.get.return_value = json.dumps({
-            'status':200,
-            'message': 'Howdy-doo'
-        })
+        mock_response = Mock()
+		mock.json.return_value = {
+            'status': 'success',
+            'greeting': 'Howdy-doo'
+        }
+        mock_requests.get.return_value = mock_response
         self.assertEqual(get_welcome_message('Monty'), "Howdy-doo, Monty!")
 
 if __name__ == '__main__':
@@ -341,7 +341,6 @@ Multiple patches can be added to a single function. Note that Python decorators 
 
 ```python
 import unittest
-import json
 from unittest.mock import patch, Mock
 from modules.messages import get_welcome_message
 
@@ -349,11 +348,12 @@ class TestMessages(unittest.TestCase):
     @patch('modules.messages.datetime.datetime')
     @patch('modules.messages.requests')
     def test_get_welcome_message(self, mock_requests, mock_datetime):
-        mock_requests.get = Mock()
-        mock_requests.get.return_value = json.dumps({
-            'status':200,
+        mock_response = Mock()
+        mock_response.json.return_value = {
+            'status': 'success',
             'message': 'Howdy-doo'
-        })
+        }
+		mock_request.get.return_value = mock_response
         mock_datetime.now = Mock()
         mock_datetime.now.return_value = 5
         self.assertEqual(get_welcome_message('Monty'), "Howdy-doo, Monty! The current time is 5")
@@ -366,7 +366,6 @@ Patches can also be applied by a context manager as opposed to a decorator, and 
 
 ```python
 import unittest
-import json
 from unittest.mock import patch, Mock
 from modules.messages import get_welcome_message
 
@@ -374,10 +373,12 @@ class TestMessages(unittest.TestCase):
     def test_get_welcome_message(self, mock_requests, mock_datetime):
         with patch('modules.messages.datetime.datetime') as mock_datetime:
             with patch('modules.messages.requests', new=CustomMock) as mock_requets:
-                mock_requests.get.return_value = json.dumps({
-                    'status':200,
+				mock_response = Mock()
+				mock_response.json.return_value = {
+                    'status': 'success',
                     'message': 'Howdy-doo'
-                })
+                }
+				mock_request.get.return_value = mock_response
                 mock_datetime.now = Mock()
                 mock_datetime.now.return_value = 5
                 self.assertEqual(get_welcome_message('Monty'), "Howdy-doo, Monty! The current time is 5")
@@ -519,10 +520,10 @@ As mentioned above, Python's lack of a `this` keyword makes object composition e
 
 ```python
 def print_class_name(obj):
-	print(obj.__class__.__name__)
+    print(obj.__class__.__name__)
 
 class Dummy():
-	print_class_name = print_class_name
+    print_class_name = print_class_name
 ```
 
 Allows:
@@ -539,7 +540,7 @@ Python allows for naming arguments, which can make function calls much easier to
 
 ```python
 def are_factors(factor_a, factor_b, target):
-	return factor_a * factor_b == target
+    return factor_a * factor_b == target
 ```
 
 We can invoke it in a variety of ways:
@@ -559,7 +560,7 @@ Arguments can also have default values which will be used if no other value is p
 
 ```python
 def add_one(number=1):
-	return number + 1
+    return number + 1
 ```
 
 We can do the following:
@@ -580,13 +581,13 @@ One thing to beware in Python is supplying anything _mutable_ as a default argum
 ```python
 # Strings are an immutable type, so writng a new value to a string variable simply creates a new string in memory.
 def append_to_string(new_string, old_string=''):
-	old_string = old_string + new_string
-	return old_string
+    old_string = old_string + new_string
+    return old_string
 
 # Lists are a mutable type, so changes made to it will be picked up by future invokations
 def append_to_list(elem, old_list=[])
-	old_list.append(elem)
-	return old_list
+    old_list.append(elem)
+    return old_list
 ```
 
 Results in the fairly unexpected:
@@ -608,10 +609,10 @@ The recommended way to handle cases where you'd want to supply a mutable value a
 
 ```python
 def append_to_list(elem, old_list=None)
-	if old_list == None:
-		old_list = []
-	old_list.append(elem)
-	return old_list
+    if old_list == None:
+        old_list = []
+    old_list.append(elem)
+    return old_list
 ```
 
 ## Syntax
